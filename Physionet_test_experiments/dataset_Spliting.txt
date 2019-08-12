@@ -1,0 +1,2 @@
+train: a + 70%(b,c,d,e)
+valid: f + 30%(b,c,d,e)

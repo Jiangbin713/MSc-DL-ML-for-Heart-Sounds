@@ -1,0 +1,1 @@
+floyd run --data jiangbin/datasets/heart_sound_physionet_split_1/1:Split_1 --gpu --env tensorflow-1.7 --follow "python VGG16.py"
