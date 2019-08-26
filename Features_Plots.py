@@ -56,7 +56,48 @@ train_sample_entropy_B = pickle.load(open(r'Saved_params\train_sample_entropy_B.
 train_spectral_entropy_A = pickle.load(open(r'Saved_params\train_spectral_entropy_A.txt', 'rb') )  #spectral entropy                   
 train_spectral_entropy_B = pickle.load(open(r'Saved_params\train_spectral_entropy_B.txt', 'rb') )  
 
+"""
+Normalisation
+"""
+#one column
+train_zc_A=train_zc_A/max(abs(train_zc_A))
+train_zc_B=train_zc_B/max(abs(train_zc_B))
 
+train_sample_entropy_A=train_sample_entropy_A/max(abs(train_sample_entropy_A))
+train_sample_entropy_B=train_sample_entropy_B/max(abs(train_sample_entropy_B))
+
+train_spectral_entropy_A=train_spectral_entropy_A/max(abs(train_spectral_entropy_A))
+train_spectral_entropy_B=train_spectral_entropy_B/max(abs(train_spectral_entropy_B))
+#two columns
+for i in range(0,2):
+    train_mfcc_A_filter_1[:,i]=train_mfcc_A_filter_1[:,i]/max(abs(train_mfcc_A_filter_1[:,i]))
+    train_mfcc_A_filter_2[:,i]=train_mfcc_A_filter_2[:,i]/max(abs(train_mfcc_A_filter_2[:,i]))
+    train_mfcc_A_filter_3[:,i]=train_mfcc_A_filter_3[:,i]/max(abs(train_mfcc_A_filter_3[:,i]))
+    train_mfcc_A_filter_4[:,i]=train_mfcc_A_filter_4[:,i]/max(abs(train_mfcc_A_filter_4[:,i]))
+    train_mfcc_A_filter_5[:,i]=train_mfcc_A_filter_5[:,i]/max(abs(train_mfcc_A_filter_5[:,i]))
+    train_mfcc_A_filter_6[:,i]=train_mfcc_A_filter_6[:,i]/max(abs(train_mfcc_A_filter_6[:,i]))
+    train_mfcc_B_filter_1[:,i]=train_mfcc_B_filter_1[:,i]/max(abs(train_mfcc_B_filter_1[:,i]))
+    train_mfcc_B_filter_2[:,i]=train_mfcc_B_filter_2[:,i]/max(abs(train_mfcc_B_filter_2[:,i]))
+    train_mfcc_B_filter_3[:,i]=train_mfcc_B_filter_3[:,i]/max(abs(train_mfcc_B_filter_3[:,i]))
+    train_mfcc_B_filter_4[:,i]=train_mfcc_B_filter_4[:,i]/max(abs(train_mfcc_B_filter_4[:,i]))
+    train_mfcc_B_filter_5[:,i]=train_mfcc_B_filter_5[:,i]/max(abs(train_mfcc_B_filter_5[:,i]))
+    train_mfcc_B_filter_6[:,i]=train_mfcc_B_filter_6[:,i]/max(abs(train_mfcc_B_filter_6[:,i]))
+    train_mean_peak_interval_A[:,i]=train_mean_peak_interval_A[:,i]/max(abs(train_mean_peak_interval_A[:,i]))
+    train_mean_peak_interval_B[:,i]=train_mean_peak_interval_B[:,i]/max(abs(train_mean_peak_interval_B[:,i]))
+    train_std_peak_interval_A[:,i]=train_std_peak_interval_A[:,i]/max(abs(train_std_peak_interval_A[:,i]))
+    train_std_peak_interval_B[:,i]=train_std_peak_interval_B[:,i]/max(abs(train_std_peak_interval_B[:,i]))
+    train_freq_mean_std_A[:,i]=train_freq_mean_std_A[:,i]/max(abs(train_freq_mean_std_A[:,i]))
+    train_freq_mean_std_B[:,i]=train_freq_mean_std_B[:,i]/max(abs(train_freq_mean_std_B[:,i]))
+    train_freq_seg_mean_std_A[:,i]=train_freq_seg_mean_std_A[:,i]/max(abs(train_freq_seg_mean_std_A[:,i]))
+    train_freq_seg_mean_std_B[:,i]=train_freq_seg_mean_std_B[:,i]/max(abs(train_freq_seg_mean_std_B[:,i]))
+#four colums
+for i in range(0,4):
+    train_freq_seg_mean_std_A[:,i]=train_freq_seg_mean_std_A[:,i]/max(abs(train_freq_seg_mean_std_A[:,i]))
+    train_freq_seg_mean_std_B[:,i]=train_freq_seg_mean_std_B[:,i]/max(abs(train_freq_seg_mean_std_B[:,i]))
+#12 columns
+for i in range(0,12):
+    train_mfcc_A[:,i]=train_mfcc_A[:,i]/max(abs(train_mfcc_A[:,i]))
+    train_mfcc_B[:,i]=train_mfcc_B[:,i]/max(abs(train_mfcc_B[:,i]))
 """
 load labels
 """
@@ -74,8 +115,6 @@ Plot features
 """
 
 #Zero crossing
-train_zc_A = normalize(train_zc_A, axis=0, norm='max') # normalization
-train_zc_B = normalize(train_zc_B, axis=0, norm='max' )
 
 #A
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
@@ -94,11 +133,13 @@ ax[1].scatter(x_B_1D[590:799], train_zc_B[590:799], label = 'murmur_B', cmap = '
 ax[1].scatter(x_B_1D[800:872], train_zc_B[800:872], label ='extrahls_B', cmap = 'k', marker = 's' )
 ax[1].legend()
 ax[1].set_title('Zero crossing rate - Dataset B')
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 #######################################################
 
 #mean of S1 S2 interval
-train_mean_peak_interval_A = normalize(train_mean_peak_interval_A, axis=0, norm= 'max')
-train_mean_peak_interval_B = normalize(train_mean_peak_interval_B, axis=0, norm= 'max')
+
 
 #A
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
@@ -118,6 +159,8 @@ ax[1].scatter(x_A_1D[175:294], train_mean_peak_interval_A[175:294, 1], label = '
 ax[1].legend()
 ax[1].set_title('S2 segment mean - Dataset A')
 
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 #B
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 fig.suptitle('mean of S1 and S2 - Dataset B')
@@ -133,11 +176,13 @@ ax[1].scatter(x_B_1D[590:799], train_mean_peak_interval_B[590:799, 1], label = '
 ax[1].scatter(x_B_1D[800:872], train_mean_peak_interval_B[800:872, 1], label ='extrahls_B', cmap = 'k' , marker = 's')
 ax[1].legend()
 ax[1].set_title('S2 segment mean - Dataset B')
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 #######################################################
 
 #std of S1 S2 interval
-train_std_peak_interval_A = normalize(train_std_peak_interval_A, axis=0, norm= 'max')
-train_std_peak_interval_B = normalize(train_std_peak_interval_B, axis=0, norm= 'max')
+
 
 #A
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
@@ -157,6 +202,9 @@ ax[1].scatter(x_A_1D[175:294], train_std_peak_interval_A[175:294, 1], label = 'a
 ax[1].legend()
 ax[1].set_title('S2 segment std - Dataset A')
 
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 #B
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 fig.suptitle('Std of S1 and S2 - Dataset B')
@@ -172,11 +220,13 @@ ax[1].scatter(x_B_1D[590:799], train_std_peak_interval_B[590:799, 1], label = 'm
 ax[1].scatter(x_B_1D[800:872], train_std_peak_interval_B[800:872, 1], label ='extrahls_B', cmap = 'k' , marker = 's')
 ax[1].legend()
 ax[1].set_title('S2 segment std - Dataset B')
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 ###########################################################
 
 #Sample entropy
-train_sample_entropy_A = normalize(train_sample_entropy_A, axis=0, norm='max')# normalization
-train_sample_entropy_B = normalize(train_sample_entropy_B, axis=0, norm='max')
+
 
 #A
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
@@ -195,11 +245,14 @@ ax[1].scatter(x_B_1D[590:799], train_sample_entropy_B[590:799], label = 'murmur_
 ax[1].scatter(x_B_1D[800:872], train_sample_entropy_B[800:872], label ='extrahls_B', cmap = 'k' , marker = 's')
 ax[1].legend()
 ax[1].set_title('Sample entropy - Dataset B')
+
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 ###########################################################
 
 #Spectral entropy
-train_spectral_entropy_A = normalize(train_spectral_entropy_A, axis=0, norm='max')# normalization
-train_spectral_entropy_B = normalize(train_spectral_entropy_B, axis=0, norm='max')
+
 
 #A
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
@@ -218,11 +271,14 @@ ax[1].scatter(x_B_1D[590:799], train_spectral_entropy_B[590:799], label = 'murmu
 ax[1].scatter(x_B_1D[800:872], train_spectral_entropy_B[800:872], label ='extrahls_B', cmap = 'k', marker = 's' )
 ax[1].legend()
 ax[1].set_title('Spectral entropy - Dataset B')
+
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 ###########################################################
 
 #Whole wav file std of frequency engery
-train_freq_mean_std_A = normalize(train_freq_mean_std_A, axis=0, norm='max')# normalization
-train_freq_mean_std_B = normalize(train_freq_mean_std_B, axis=0, norm='max')
+
 #A
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 fig.suptitle('Mean of frequency amplitude')
@@ -241,7 +297,8 @@ ax[1].legend()
 ax[1].set_title('Mean of frequency amplitude - Dataset B')
 
 
-
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 #B
 fig,ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 fig.suptitle('Std of frequency amplitude')
@@ -259,11 +316,12 @@ ax[1].scatter(x_B_1D[800:872], train_freq_mean_std_B[800:872, 1], label ='extrah
 ax[1].legend()
 ax[1].set_title('Std of frequency amplitude - Dataset B')
 
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
+
 ###########################################################
 
 #Segmentation mean, std of frequency energy
-train_freq_seg_mean_std_A = normalize(train_freq_seg_mean_std_A, axis=0, norm='max')# normalization
-train_freq_seg_mean_std_B = normalize(train_freq_seg_mean_std_B, axis=0, norm='max')
 
 #A
 fig,ax = plt.subplots(nrows=2, ncols=2, figsize=(15,10))
@@ -296,6 +354,10 @@ ax[1,1].scatter(x_A_1D[135:174], train_freq_seg_mean_std_A[135:174, 3], label ='
 ax[1,1].scatter(x_A_1D[175:294], train_freq_seg_mean_std_A[175:294, 3], label = 'artifact_A', cmap = 'g', marker = 'x')
 ax[1,1].legend()
 ax[1,1].set_title('Std of S1 frequency amplitude  - Dataset A')
+
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 #B
 fig,ax = plt.subplots(nrows=2, ncols=2, figsize=(15,10))
 fig.suptitle('Mean and std of S1 and S2 frequency amplitude  - Dataset B')
@@ -324,15 +386,17 @@ ax[1,1].scatter(x_B_1D[800:872], train_freq_seg_mean_std_B[800:872, 3], label ='
 ax[1,1].legend()
 ax[1,1].set_title('Std of S1 frequency amplitude - Dataset B')
 
+
+fig.text(0.5, 0.04,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=13)
+fig.text(0.06, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=13)
 ###########################################################
 
 #mfccs mean,std of each filter
-train_mfcc_A = normalize(train_mfcc_A, axis=0, norm='max')# normalization
-train_mfcc_B = normalize(train_mfcc_B, axis=0, norm='max')
+
 
 #A
 fig,ax = plt.subplots(nrows=3, ncols=4, figsize=(20,15))
-fig.suptitle('Mean and std MFCCs of each filter - Dataset A')
+fig.suptitle('Mean and std MFCCs of each filter - Dataset A',fontsize=17)
 
 ax[0,0].scatter(x_A_1D[0:67], train_mfcc_A[0:67, 0], label = 'normal_A', cmap = 'r' , marker = 'o' )
 ax[0,0].scatter(x_A_1D[68:134], train_mfcc_A[68:134, 0], label = 'murmur_A', cmap = 'b', marker = '^')
@@ -418,9 +482,12 @@ ax[2,3].scatter(x_A_1D[175:294], train_mfcc_A[175:294, 11], label = 'artifact_A'
 ax[2,3].legend()
 ax[2,3].set_title('Std of the sixth filter MFCCs - Dataset A')
 
+
+fig.text(0.5, 0.1,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=17)
+fig.text(0.1, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=17)
 #B
 fig,ax = plt.subplots(nrows=3, ncols=4, figsize=(20,15))
-fig.suptitle('Mean and std MFCCs of each filter - Dataset - B')
+fig.suptitle('Mean and std MFCCs of each filter - Dataset - B',fontsize=17)
 
 ax[0,0].scatter(x_B_1D[0:589], train_mfcc_B[0:589, 0], label = 'normal_B', cmap = 'r'  , marker = 'o')
 ax[0,0].scatter(x_B_1D[590:799], train_mfcc_B[590:799, 0], label = 'murmur_B', cmap = 'b', marker = '^')
@@ -494,6 +561,12 @@ ax[2,3].scatter(x_B_1D[590:799], train_mfcc_B[590:799, 11], label = 'murmur_B', 
 ax[2,3].scatter(x_B_1D[800:872], train_mfcc_B[800:872, 11], label ='extrahls_B', cmap = 'k' , marker = 's')
 ax[2,3].legend()
 ax[2,3].set_title('Std of the sixth filter MFCCs - Dataset B')
+
+
+fig.text(0.5, 0.1,'Heart sound chunk index', ha = 'center', va = 'center',fontsize=17)
+fig.text(0.1, 0.5,'Normalised value', ha ='center', va='center', rotation='vertical',fontsize=17)
+
+'''
 ###########################################################
 
 #mfcc of each filter after reduce diamensions to 2D
