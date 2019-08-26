@@ -129,8 +129,8 @@ for cout_1 in range(0,len(first_dir)):
             # filting
             signal = butter_bandpass_filter(signal, Config.lowcut, Config.highcut, Config.sr, Config.order)
             
-            # normalize (强化了在语谱图中低频的能量，稍微强化了弱心音)
-            signal = (signal - np.min(signal)) / (np.max(signal)- np.min(signal))
+            # normalize 
+            signal = signal / np.max(np.abs(signal))
             
             
             while len(signal) > 0:
