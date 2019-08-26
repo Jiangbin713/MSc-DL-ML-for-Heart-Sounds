@@ -887,11 +887,19 @@ x_test_B = np.hstack((test_zc_B, test_freq_mean_std_B ,
 
 
 ########Normalize Feature###############
-
-x_train_A = normalize(x_train_A, axis=0, norm='max')
-x_train_B = normalize(x_train_B, axis=0, norm='max')
-x_test_A = normalize(x_test_A, axis=0, norm='max')
-x_test_B = normalize(x_test_B, axis=0, norm='max')
+for i in range(0:np.size(x_train_A,1))
+    x_train_A = x_train_A[:,i]/ np.max(np.abs(x_train_A[:,i]))
+for i in range(0:np.size(x_train_B,1))
+    x_train_B = x_train_B[:,i]/ np.max(np.abs(x_train_B[:,i]))
+for i in range(0:np.size(x_test_A,1))
+    x_test_A = x_test_A[:,i]/ np.max(np.abs(x_test_A[:,i]))
+for i in range(0:np.size(x_test_B,1))
+    x_test_B = x_test_B[:,i]/ np.max(np.abs(x_test_AB[:,i]))
+    
+    #x_train_A = normalize(x_train_A, axis=0, norm='max')
+    #x_train_B = normalize(x_train_B, axis=0, norm='max')
+    #x_test_A = normalize(x_test_A, axis=0, norm='max')
+    #x_test_B = normalize(x_test_B, axis=0, norm='max')
 
 
 ########Save##############
